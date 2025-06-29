@@ -622,7 +622,7 @@
         }
 
         function endGame() {
-            playSound('end'); // Play sound on game over
+            playSound('end');
             isGameActive = false; clearTimeout(spawnerTimeout); clearInterval(gameTimer); clearInterval(itemSpawner);
             dom.squidArea.innerHTML = '';
             const coinsEarned = Math.floor(score / 2);
@@ -711,7 +711,7 @@
                 squidEl.classList.add('squid-correct');
             } else {
                 playSound('wrong');
-                vibrate([100, 50, 100]);
+                vibrate([100, 70, 100]); // MODIFIED: Vibration pattern
                 squidEl.classList.add('squid-wrong');
             }
 
@@ -731,7 +731,9 @@
 
             squidEl.style.pointerEvents = 'none';
             squidEl.draggable = false;
-            squidEl.style.animationPlayState = 'paused'; 
+            if(squidEl.classList.contains('squid-rise')) {
+                squidEl.style.animationPlayState = 'paused'; 
+            }
 
             const num = parseInt(squidEl.dataset.number);
             const isCorrect = (grillId !== 'none') && checkEvenOddAnswer(num, grillId);
@@ -772,7 +774,7 @@
                 animationDelay = 500;
                 comboCounter = 0;
                 playSound('wrong');
-                vibrate([100, 50, 100]);
+                vibrate([100, 70, 100]); // MODIFIED: Vibration pattern
                 squidEl.classList.add('squid-wrong');
                 squidEl.style.animationPlayState = 'running';
             }
@@ -782,12 +784,12 @@
             
             setTimeout(() => {
                 if (squidEl) squidEl.remove();
-                if (isGameActive && currentGameMode === 'endless' && isCorrect) {
+                // MODIFIED: Generate new squid in endless mode regardless of answer
+                if (isGameActive && currentGameMode === 'endless') {
                     generateSquidEndless();
                 }
             }, animationDelay);
         }
-
         
         function updateHUD() {
             let titleText = ''; let infoHTML = '';
@@ -1003,7 +1005,7 @@
             if (equippedColor) { document.documentElement.style.setProperty('--squid-color-filter', equippedColor.filter); }
         }
 
-        const baseImages = ['BG.png', 'grill-1.png', 'grill-2.png', 'time.png', 'bomb.png'];
+        const baseImages = ['BG.gif', 'grill-1.png', 'grill-2.png', 'time.png', 'bomb.png'];
         const squidImages = [];
         for (let i = 1; i <= 8; i++) { squidImages.push(`squid-${i}.png`); }
         const imagesToLoad = [...baseImages, ...squidImages];
