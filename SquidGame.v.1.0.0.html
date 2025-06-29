@@ -237,12 +237,11 @@
         }
         .shop-item .item-price { font-weight: bold; color: #ffeb3b; }
 
-        /* --- MODIFIED: Added scrolling for tutorial body --- */
         #tutorial-body {
-            max-height: 60vh; /* Max height is 60% of viewport height */
-            overflow-y: auto; /* Show vertical scrollbar only if needed */
-            padding-right: 15px; /* Space for the scrollbar */
-            box-sizing: content-box; /* Ensure padding doesn't shrink content area */
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 15px;
+            box-sizing: content-box;
         }
 
 
@@ -512,11 +511,15 @@
                 draggedClone = originalSquid.cloneNode(true);
                 draggedClone.style.transition = 'none'; draggedClone.classList.add('dragging');
                 originalSquid.style.visibility = 'hidden';
-                const rect = originalSquid.getBoundingClientRect();
-                const touch = e.touches[0];
-                offsetX = touch.clientX - rect.left; offsetY = touch.clientY - rect.top;
+                
                 document.body.appendChild(draggedClone);
-                draggedClone.style.position = 'absolute'; draggedClone.style.zIndex = '1000';
+
+                // MODIFIED: Center the squid on the finger
+                offsetX = draggedClone.offsetWidth / 2;
+                offsetY = draggedClone.offsetHeight / 2;
+
+                draggedClone.style.position = 'absolute'; 
+                draggedClone.style.zIndex = '1000';
                 handleMove(e);
             }, { passive: false });
             dom.gameContainer.addEventListener('touchmove', handleMove, { passive: false });
