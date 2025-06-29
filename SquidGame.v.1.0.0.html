@@ -507,14 +507,16 @@
                 const target = e.target.closest('.squid');
                 if (!target || target.classList.contains('squid-correct') || target.classList.contains('squid-wrong')) return;
                 e.preventDefault();
-                originalSquid = target; originalSquid.style.animation = 'none';
+                originalSquid = target; 
+                originalSquid.style.animation = 'none'; // Stop animation on original
                 draggedClone = originalSquid.cloneNode(true);
-                draggedClone.style.transition = 'none'; draggedClone.classList.add('dragging');
+                draggedClone.style.animation = 'none'; // MODIFIED: Stop animation on the clone as well
+                draggedClone.style.transition = 'none'; 
+                draggedClone.classList.add('dragging');
                 originalSquid.style.visibility = 'hidden';
                 
                 document.body.appendChild(draggedClone);
-
-                // MODIFIED: Center the squid on the finger
+                
                 offsetX = draggedClone.offsetWidth / 2;
                 offsetY = draggedClone.offsetHeight / 2;
 
